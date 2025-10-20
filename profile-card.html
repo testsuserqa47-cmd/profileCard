@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Card - HNG Frontend Stage 0</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      /* Profile Card Container */
+      article[data-testid="test-profile-card"] {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 100%;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      /* Mobile Layout */
+      @media (max-width: 768px) {
+        article[data-testid="test-profile-card"] {
+          margin: 20px;
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Desktop Layout */
+      @media (min-width: 769px) {
+        article[data-testid="test-profile-card"] {
+          grid-template-columns: 300px 1fr;
+          max-width: 900px;
+        }
+      }
+
+      /* Header Section */
+      .profile-header {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        padding: 40px 30px;
+        text-align: center;
+        color: white;
+        position: relative;
+      }
+
+      @media (min-width: 769px) {
+        .profile-header {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 60px 40px;
+        }
+      }
+
+      /* Avatar Section */
+      figure {
+        margin: 0 auto 20px;
+        width: 150px;
+        height: 150px;
+        position: relative;
+      }
+
+      img[data-testid="test-user-avatar"] {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Name */
+      h2[data-testid="test-user-name"] {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Bio */
+      p[data-testid="test-user-bio"] {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        line-height: 1.6;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      /* Time Display */
+      .time-display {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 25px;
+        padding: 8px 16px;
+        margin-top: 20px;
+        font-family: "Courier New", monospace;
+        font-size: 0.9rem;
+        backdrop-filter: blur(10px);
+      }
+
+      /* Main Content */
+      .profile-content {
+        padding: 40px 30px;
+      }
+
+      /* Social Links */
+      nav[data-testid="test-user-social-links"] {
+        margin-bottom: 30px;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .social-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .social-link:focus {
+        outline: 3px solid #4facfe;
+        outline-offset: 2px;
+      }
+
+      .social-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+        fill: currentColor;
+      }
+
+      /* Lists Section */
+      .lists-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      @media (min-width: 768px) {
+        .lists-container {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      section {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 25px;
+        border-left: 4px solid #667eea;
+      }
+
+      h3 {
+        color: #333;
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        background: white;
+        margin-bottom: 8px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease;
+      }
+
+      li:hover {
+        transform: translateX(5px);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 480px) {
+        .profile-header {
+          padding: 30px 20px;
+        }
+
+        h2[data-testid="test-user-name"] {
+          font-size: 1.5rem;
+        }
+
+        p[data-testid="test-user-bio"] {
+          font-size: 1rem;
+        }
+
+        .profile-content {
+          padding: 30px 20px;
+        }
+
+        figure {
+          width: 120px;
+          height: 120px;
+        }
+      }
+
+      /* Animation for time updates */
+      @keyframes pulse {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .time-updating {
+        animation: pulse 0.5s ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <article data-testid="test-profile-card">
+      <!-- Header Section with Avatar, Name, Bio, and Time -->
+      <header class="profile-header">
+        <figure>
+          <img
+            data-testid="test-user-avatar"
+            src="Damilola Odewunmi.jpg"
+            alt="Profile picture of Damilola Odewunmi, a software developer"
+          />
+        </figure>
+
+        <h2 data-testid="test-user-name" aria-label="User name">
+          Damilola Odewunmi
+        </h2>
+
+        <p data-testid="test-user-bio">
+          Passionate software developer with 1 year of experience in full-stack
+          development. Love creating beautiful, accessible web applications that
+          make a difference in people's lives.
+        </p>
+
+        <div class="time-display">
+          <span data-testid="test-user-time">Loading...</span>
+        </div>
+      </header>
+
+      <!-- Main Content Section -->
+      <div class="profile-content">
+        <!-- Social Links -->
+        <nav
+          data-testid="test-user-social-links"
+          aria-label="Social media links"
+        >
+          <ul class="social-links">
+            <li>
+              <a
+                href="https://twitter.com/damilolaodewunmi"
+                class="social-link"
+                data-testid="test-user-social-twitter"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Follow Damilola Odewunmi on Twitter"
+              >
+                <svg class="social-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+                  />
+                </svg>
+                Twitter
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://linkedin.com/in/damilolaodewunmi"
+                class="social-link"
+                data-testid="test-user-social-linkedin"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Connect with Damilola Odewunmi on LinkedIn"
+              >
+                <svg class="social-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                  />
+                </svg>
+                LinkedIn
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/damilolaodewunmi"
+                class="social-link"
+                data-testid="test-user-social-github"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="View Damilola Odewunmi's GitHub profile"
+              >
+                <svg class="social-icon" viewBox="0 0 24 24">
+                  <path
+                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                  />
+                </svg>
+                GitHub
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Lists Container -->
+        <div class="lists-container">
+          <!-- Hobbies Section -->
+          <section data-testid="test-user-hobbies">
+            <h3>Hobbies</h3>
+            <ul>
+              <li>Playing Guitar</li>
+              <li>Reading Tech Books</li>
+              <li>Running Marathons</li>
+              <li>Gaming</li>
+              <li>Traveling</li>
+              <li>Cooking</li>
+            </ul>
+          </section>
+
+          <!-- Dislikes Section -->
+          <section data-testid="test-user-dislikes">
+            <h3>Dislikes</h3>
+            <ul>
+              <li>Spaghetti Code</li>
+              <li>Lack of Sleep</li>
+              <li>Cold Coffee</li>
+              <li>Spam Emails</li>
+              <li>Missing Deadlines</li>
+              <li>Bugs in Production</li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </article>
+
+    <script>
+      // Update time display
+      function updateTime() {
+        const timeElement = document.querySelector(
+          '[data-testid="test-user-time"]'
+        );
+        if (timeElement) {
+          const currentTime = "11/11/2002";
+          timeElement.textContent = currentTime;
+          timeElement.classList.add("time-updating");
+
+          // Remove animation class after animation completes
+          setTimeout(() => {
+            timeElement.classList.remove("time-updating");
+          }, 500);
+        }
+      }
+
+      // Update time immediately and then every 5 seconds
+      updateTime();
+      setInterval(updateTime, 5000);
+
+      // Add keyboard navigation support
+      document.addEventListener("keydown", function (event) {
+        // Handle Enter key on focused elements
+        if (event.key === "Enter" && event.target.tagName === "A") {
+          event.target.click();
+        }
+      });
+
+      // Add focus styles for keyboard navigation
+      document.addEventListener("DOMContentLoaded", function () {
+        const focusableElements = document.querySelectorAll(
+          "a, button, [tabindex]"
+        );
+
+        focusableElements.forEach((element) => {
+          element.addEventListener("focus", function () {
+            this.style.outline = "3px solid #4facfe";
+            this.style.outlineOffset = "2px";
+          });
+
+          element.addEventListener("blur", function () {
+            this.style.outline = "";
+            this.style.outlineOffset = "";
+          });
+        });
+      });
+
+      // Log current time for testing purposes
+      console.log("Profile Card Loaded - Current Time:", Date.now());
+    </script>
+  </body>
+</html>
