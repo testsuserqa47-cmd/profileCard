@@ -376,7 +376,7 @@
           '[data-testid="test-user-time"]'
         );
         if (timeElement) {
-          const currentTime = "11/11/2002";
+          const currentTime = Date.now();
           timeElement.textContent = currentTime;
           timeElement.classList.add("time-updating");
 
